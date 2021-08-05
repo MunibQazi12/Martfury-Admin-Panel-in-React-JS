@@ -7,8 +7,8 @@ class SideBar extends Component {
     render() {
         return (
             <>
-                <div className="max-w-sm flex-grow min-h-screen pl-16 pt-16 pb-16 text-left bg-gray-100 work-sans">
-                    <div className="sideBar relative h-100 pb-24">
+                <div className="w-72 sm:w-80 lg:w-96 flex-grow h-full pl-8 pt-8 pb-8 lg:pl-16 lg:pt-16 lg:pb-16 text-left bg-gray-100 work-sans">
+                    <div className="relative h-100 pb-24">
                         <div className="sideBar-top pr-8">
                             <div className="user-info relative w-full flex items-center justify-between mb-20">
                                 <div className="flex">

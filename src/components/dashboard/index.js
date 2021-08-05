@@ -11,15 +11,9 @@ class Dashboard extends Component {
         super(props);
         this.refDropdown = React.createRef();
         this.state = {
-            dropDownToggle: false
+            sideBarMobileToggle: false,
+            tableRow: ''
         }
-    }
-
-    dropDownToggleHandler = () => {
-        this.setState({
-            dropDownToggle: !this.state.dropDownToggle
-        })
-        console.log("Hello ji");
     }
 
     componentDidMount() {
@@ -33,10 +27,22 @@ class Dashboard extends Component {
     handleClickOutside = (event) => {
         if (this.refDropdown.current && !this.refDropdown.current.contains(event.target)) {
             this.setState({
-                dropDownToggle: false
+                tableRow: false
             });
         }
     };
+
+    sideBarMobileHandler = () => {
+        this.setState({
+            sideBarMobileToggle: !this.state.sideBarMobileToggle
+        })
+    }
+
+    tableRowHandler = (x) => {
+        this.setState({
+            tableRow: x
+        })
+    }
 
     render() {
         const recentOrders = [
@@ -51,15 +57,26 @@ class Dashboard extends Component {
         
         return (
             <>
-                <main className="main-content flex flex-row flex-nowrap items-stretch ">
-                    <SideBar />
-                    <div className="main-wrapper p-8 work-sans flex-grow">
-                        <Header />
+                <main className="main-content flex flex-row flex-nowrap items-stretch">
+                    <div className="sideBar overflow-y-auto hidden lg:block">
+                        <SideBar />
+                    </div>
+                    
+                    <div className={`sideBar overflow-y-auto lg:hidden fixed left-0 top-0 h-full z-30 ${this.state.sideBarMobileToggle ? "left-0 sideBarTransition" : "-left-96"}`}>
+                        <SideBar />
+                    </div>
 
-                        <section className="dashboard-content flex justify-between work-sans">
-                            <div className="section-left pr-8">
-                                <div className="flex flex-wrap">
-                                    <div className="w-8/12 flex-grow text-left">
+                    <div onClick={this.sideBarMobileHandler} className={`lg:hidden ${this.state.sideBarMobileToggle ? "show" : "hidden"}`}>
+                        <div className="sidePanelOverlay fixed top-0 left-0 right-0 bottom-0 z-20 bg-gray-50 w-100 h-100"></div>
+                    </div>
+
+                    <div className="overflow-x-auto main-wrapper p-6 xl:p-8 work-sans flex-grow">
+                        <Header sideBarMobileHandler={this.sideBarMobileHandler}/>
+
+                        <section className="dashboard-content flex flex-col xl:flex-row justify-between work-sans mt-20 lg:mt-0">
+                            <div className="section-left lg:pr-8 order-2 xl:order-1">
+                                <div className="flex flex-wrap flex-col md:flex-row">
+                                    <div className="md:w-8/12 flex-grow text-left">
                                         <div className="sales-report pb-8">
                                             <h4 className="mb-0 text-gray-900 font-semibold text-xl">Sales Report</h4>
                                             <div className="px-4 py-2">
@@ -81,7 +98,7 @@ class Dashboard extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="w-4/12 flex-grow text-left">
+                                    <div className="md:w-4/12 flex-grow text-left">
                                         <div className="sales-report pb-8 text-gray-900 font-semibold text-xl">
                                             <h4 className="mb-0">Earnings</h4>
                                         </div>
@@ -117,7 +134,7 @@ class Dashboard extends Component {
                                 <div className="recent-orders">
                                     <h4 className="mb-0 text-gray-900 font-semibold text-xl pb-4 text-left">Recent Orders</h4>
                                 
-                                    <div className="recent-order-content">
+                                    <div className="overflow-x-auto recent-order-content">
                                         <table className="w-full">
                                             <thead>
                                                 <tr>
@@ -143,8 +160,8 @@ class Dashboard extends Component {
                                                                     <span className="text-green-400 text-xl mr-1">&#x2022;</span>Delivered</td>
                                                                 <td className="py-4 text-sm font-semibold text-gray-900">$56.00</td>
                                                                 <td ref={this.refDropdown} className="py-4 text-sm text-center">
-                                                                    <i onClick={this.dropDownToggleHandler} className="fa fa-ellipsis-h cursor-pointer" aria-hidden="true"></i>
-                                                                    <div className={`dropdown-menu border border-gray-100 flex flex-col text-left rounded w-24 absolute bg-white ${this.state.dropDownToggle ? "show" : "hidden"}`}>
+                                                                    <i onClick={() => this.tableRowHandler(i) } className="fa fa-ellipsis-h cursor-pointer" aria-hidden="true"></i>
+                                                                    <div className={`dropdown-menu border border-gray-100 flex flex-col text-left rounded w-24 absolute bg-white ${this.state.tableRow === i ? "show" : "hidden"}`}>
                                                                         <Link to="https://tailwindcss.com/docs/display" className="text-sm text-gray-800 font-light hover:bg-gray-100 px-2 py-1">Edit</Link>
                                                                         <Link to="#" className="text-sm text-gray-800 font-light hover:bg-gray-100 px-2 py-1">Delete</Link>
                                                                     </div>
@@ -238,7 +255,7 @@ class Dashboard extends Component {
                                 </div>   
                             </div>
 
-                            <div className="section-right flex-grow max-w-xs pl-4 border-l border-gray-4">
+                            <div className="section-right flex-grow lg:max-w-full xl:max-w-xs xl:pl-4 xl:border-l xl:border-gray-4 order-1 xl:order-2">
                                 <div className="statistics">
                                     <div className="statistics-header flex justify-between items-center pb-8">
                                         <h4 className="mb-0 text-gray-900 font-semibold text-xl">Statics</h4>
@@ -252,56 +269,58 @@ class Dashboard extends Component {
                                         </div>
                                     </div>
 
-                                    <div className="statistics-card bg-yellow-50 rounded-2xl mb-4">
-                                        <div className="flex items-center rounded-lg p-6">
-                                            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
-                                                <i className="fa fa-cart-arrow-down text-yellow-400" aria-hidden="true"></i>
-                                            </div>
+                                    <div className="flex flex-wrap lg:justify-between xl:flex-col">
+                                        <div className="statistics-card bg-yellow-50 rounded-2xl mb-4 w-full md:w-5/12 lg:w-auto md:mr-4 lg:mr-0">
+                                            <div className="flex items-center rounded-lg p-6">
+                                                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
+                                                    <i className="fa fa-cart-arrow-down text-yellow-400" aria-hidden="true"></i>
+                                                </div>
 
-                                            <div className="pl-6 text-left">
-                                                <p className="text-gray-500 font-light">Orders</p>
-                                                <h4 className="text-xl text-gray-900 font-semibold">254
-                                                    <small className="text-green-600">
-                                                        <i className="fa fa-long-arrow-up mx-2" aria-hidden="true"></i>
-                                                        <span className="text-sm font-semibold">12.5%</span>
-                                                    </small>
-                                                </h4>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="statistics-card bg-red-50 rounded-2xl mb-4">
-                                        <div className="flex items-center rounded-lg p-6">
-                                            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
-                                                <i className="fa fa-cart-arrow-down text-yellow-400" aria-hidden="true"></i>
-                                            </div>
-
-                                            <div className="pl-6 text-left">
-                                                <p className="text-gray-500 font-light">Revenue</p>
-                                                <h4 className="text-xl text-gray-900 font-semibold">$6,260
-                                                    <small className="text-green-600">
-                                                        <i className="fa fa-long-arrow-up mx-2" aria-hidden="true"></i>
-                                                        <span className="text-sm font-semibold">7.1%</span>
-                                                    </small>
-                                                </h4>
+                                                <div className="pl-3 xl:pl-6 text-left">
+                                                    <p className="text-gray-500 font-light">Orders</p>
+                                                    <h4 className="text-xl text-gray-900 font-semibold">254
+                                                        <small className="text-green-600">
+                                                            <i className="fa fa-long-arrow-up mx-2" aria-hidden="true"></i>
+                                                            <span className="text-sm font-semibold">12.5%</span>
+                                                        </small>
+                                                    </h4>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    <div className="statistics-card bg-green-50 rounded-2xl mb-4">
-                                        <div className="flex items-center rounded-lg p-6">
-                                            <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
-                                                <i className="fa fa-cart-arrow-down text-yellow-400" aria-hidden="true"></i>
+                                        <div className="statistics-card bg-red-50 rounded-2xl mb-4 w-full md:w-5/12 lg:w-auto md:mr-4 lg:mr-0">
+                                            <div className="flex items-center rounded-lg p-6">
+                                                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
+                                                    <i className="fa fa-cart-arrow-down text-yellow-400" aria-hidden="true"></i>
+                                                </div>
+
+                                                <div className="pl-3 xl:pl-6 text-left">
+                                                    <p className="text-gray-500 font-light">Revenue</p>
+                                                    <h4 className="text-xl text-gray-900 font-semibold">$6,260
+                                                        <small className="text-green-600">
+                                                            <i className="fa fa-long-arrow-up mx-2" aria-hidden="true"></i>
+                                                            <span className="text-sm font-semibold">7.1%</span>
+                                                        </small>
+                                                    </h4>
+                                                </div>
                                             </div>
+                                        </div>
 
-                                            <div className="pl-6 text-left">
-                                                <p className="text-gray-500 font-light">Revenue</p>
-                                                <h4 className="text-xl text-gray-900 font-semibold">$2,567
-                                                    <small className="text-green-600">
-                                                        <i className="fa fa-long-arrow-down mx-2" aria-hidden="true"></i>
-                                                        <span className="text-sm font-semibold">0.32%</span>
-                                                    </small>
-                                                </h4>
+                                        <div className="statistics-card bg-green-50 rounded-2xl mb-4 w-full md:w-5/12 lg:w-auto md:mr-4 lg:mr-0">
+                                            <div className="flex items-center rounded-lg p-6">
+                                                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center">
+                                                    <i className="fa fa-cart-arrow-down text-yellow-400" aria-hidden="true"></i>
+                                                </div>
+
+                                                <div className="pl-3 xl:pl-6 text-left">
+                                                    <p className="text-gray-500 font-light">Revenue</p>
+                                                    <h4 className="text-xl text-gray-900 font-semibold">$2,567
+                                                        <small className="text-green-600">
+                                                            <i className="fa fa-long-arrow-down mx-2" aria-hidden="true"></i>
+                                                            <span className="text-sm font-semibold">0.32%</span>
+                                                        </small>
+                                                    </h4>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
