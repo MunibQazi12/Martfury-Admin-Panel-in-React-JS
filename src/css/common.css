@@ -2,7 +2,7 @@
     font-family: 'Work Sans', sans-serif;
 }
 
-a {
+a, button {
     position: relative;
     color: inherit;
     text-decoration: none;
@@ -51,4 +51,8 @@ a {
 .recent-order-content thead th:nth-child(5) {
     width: 150px;
     min-width: 150px;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f3f4f8;
 }

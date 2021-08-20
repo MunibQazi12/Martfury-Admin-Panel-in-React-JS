@@ -1,0 +1,19 @@
+.product-records table th:nth-child(1) {
+    min-width: 90px;
+    width: 90px;
+}
+
+.product-records table th:nth-child(4) {
+    min-width: 145px;
+    width: 145px;
+}
+
+.product-records table th:nth-child(2) {
+    min-width: 240px;
+    width: 240px;
+}
+
+.product-records table th:nth-child(6) {
+    min-width: 170px;
+    width: 170px;
+}

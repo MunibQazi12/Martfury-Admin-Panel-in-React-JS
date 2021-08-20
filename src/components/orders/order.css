@@ -1,0 +1,48 @@
+.order-records table th:nth-child(2) {
+    width: 125px;
+    min-width: 125px;
+}
+
+.order-records table th:nth-child(3) {
+    width: 200px;
+    min-width: 200px;
+}
+
+.order-records table th:nth-child(5) {
+    width: 130px;
+    min-width: 130px;
+}
+
+.order-status:before {
+    background-color: #eaeaea;
+    width: 14px;
+    height: 14px;
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 0;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    transform: translateX(-50%);
+    z-index: 9;
+}
+
+.order-status:after {
+    background-color: #eaeaea;
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    z-index: 5;
+    transform: translateX(-0.75px);
+}
+
+.order-status.active-status::before {
+    background-color: #fcb800;
+}
+
+.order-status.active-status::after {
+    background-color: #fcb800;
+}

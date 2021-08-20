@@ -6,7 +6,7 @@ class Header extends Component {
     render() {
         return (
             <>
-                <div className="header-dashboard flex justify-between items-center mb-20 fixed lg:relative xl:relative bg-gray-100 lg:bg-transparent w-full top-0 left-0 p-4 lg:p-0 z-10">
+                <div className="p-6 xl:p-8 header-dashboard flex justify-between items-center mb-20 fixed lg:relative xl:relative bg-gray-100 lg:bg-transparent w-full top-0 left-0 z-10">
                     <div className="header-left flex-grow">
                         <h3 className="text-gray-900 font-bold text-2xl text-left">Dashboard</h3>
                         <p className="text-gray-600 text-sm text-left hidden lg:block">Everything here</p>

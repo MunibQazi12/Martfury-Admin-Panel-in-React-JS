@@ -1,0 +1,34 @@
+.customer-records table th:nth-child(1) {
+    width: 105px;
+    min-width: 105px;
+}
+
+.customer-records table th:nth-child(2) {
+    width: 200px;
+    min-width: 200px;
+}
+
+.customer-records table th:nth-child(3) {
+    width: 180px;
+    min-width: 180px;
+}
+
+.customer-records table th:nth-child(4) {
+    width: 100px;
+    min-width: 100px;
+}
+
+.customer-records table th:nth-child(5) {
+    width: 110px;
+    min-width: 110px;
+}
+
+.customer-records table th:nth-child(6) {
+    width: 150px;
+    min-width: 150px;
+}
+
+.customer-records table th:nth-child(7) {
+    width: 150px;
+    min-width: 150px;
+}
